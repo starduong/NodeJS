@@ -1,26 +1,24 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+// Allcode.js
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  class ALLcode extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+  class Allcode extends Model {
     static associate(models) {
-      // define association here
+      Allcode.hasMany(models.User, { foreignKey: 'positionId', as: 'positionData' });
+      Allcode.hasMany(models.User, { foreignKey: 'gender', as: 'genderData' });
     }
   };
-  ALLcode.init({
-    key: DataTypes.STRING,
+
+  Allcode.init({
+    keyMap: DataTypes.STRING,
     type: DataTypes.STRING,
     valueEn: DataTypes.STRING,
     valueVi: DataTypes.STRING,
   }, {
     sequelize,
-    modelName: 'ALLcode',
+    modelName: 'Allcode',
   });
-  return ALLcode;
+
+  return Allcode;
 };
