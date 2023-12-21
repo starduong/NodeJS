@@ -3,9 +3,9 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('specialties', {
 
-    // address: DataTypes.STRING,
-    // description: DataTypes.TEXT,
-    // image: DataTypes.STRING
+      // address: DataTypes.STRING,
+      // description: DataTypes.TEXT,
+      // image: DataTypes.STRING
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,9 +16,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.BLOB('LONG'),
       },
-      description: {
+      descriptionHTML: {
+        type: Sequelize.TEXT
+      },
+      descriptionMarkdown: {
         type: Sequelize.TEXT
       },
       createdAt: {

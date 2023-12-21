@@ -3,11 +3,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('bookings', {
 
-        // statusId: DataTypes.STRING,
-        // doctorId: DataTypes. INTEGER,
-        // patientId: DataTypes. INTEGER,
-        // date: DataTypes.DATE,
-        // timeType: DataTypes.STRING,
+      // statusId: DataTypes.STRING,
+      // doctorId: DataTypes. INTEGER,
+      // patientId: DataTypes. INTEGER,
+      // date: DataTypes.DATE,
+      // timeType: DataTypes.STRING,
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -24,9 +24,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.STRING
       },
       timeType: {
+        type: Sequelize.STRING
+      },
+      token: {
         type: Sequelize.STRING
       },
       createdAt: {

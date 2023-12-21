@@ -14,7 +14,7 @@ let hashUserPassword = (password) => {
 }
 
 let handleUserLogin = (email, password) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let userData = {};
             let isExist = await checkUserEmail(email);
@@ -25,7 +25,7 @@ let handleUserLogin = (email, password) => {
                     where: { email: email },
                     raw: true
                 });
-                if (user) {                   
+                if (user) {
                     //compare password                    
                     let check = await bcrypt.compareSync(password, user.password);
                     if (check) {
@@ -38,21 +38,21 @@ let handleUserLogin = (email, password) => {
                         userData.errCode = 3;
                         userData.errMessage = 'wrong password';
                     }
-                    
+
                 } else {
-                    userData.errCode = 2;                    
+                    userData.errCode = 2;
                     userData.errMessage = `User's not found~`
-                    
+
                 }
             } else {
                 //return error
                 userData.errCode = 1;
                 userData.errMessage = `Your's Email isn't exist in your system. Plz try other email`
-                
+
             }
-            
+
             resolve(userData)
-        } catch(e) {
+        } catch (e) {
             reject(e)
         }
     })
@@ -61,15 +61,15 @@ let handleUserLogin = (email, password) => {
 
 let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
-        try { 
+        try {
             let user = await db.User.findOne({
-                where: { email: userEmail}
+                where: { email: userEmail }
             })
             if (user) {
                 resolve(true)
             } else {
                 resolve(false)
-            } 
+            }
         } catch (e) {
             reject(e);
         }
@@ -86,7 +86,7 @@ let getAllUsers = (userId) => {
                         exclude: ['password']
                     }
                 })
-            } 
+            }
             if (userId && userId !== 'ALL') {
                 users = await db.User.findOne({
                     where: { id: userId },
@@ -97,11 +97,11 @@ let getAllUsers = (userId) => {
             }
             resolve(users);
 
-            } catch (e) {
-                reject(e);
-            }
-        })
-    }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
 
 let createNewUser = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -115,28 +115,28 @@ let createNewUser = (data) => {
                 })
             } else {
                 let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.User.create({
-                email: data.email,
-                password: hashPasswordFromBcrypt,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                phonenumber: data.phonenumber,
-                gender: data.gender,
-                roleId: data.roleId,
-                positionId: data.positionId,
-                image: data.avatar,
-            })
-            resolve({
-                errCode: 0,
-                message: 'OK'
-            })
+                await db.User.create({
+                    email: data.email,
+                    password: hashPasswordFromBcrypt,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    address: data.address,
+                    phonenumber: data.phonenumber,
+                    gender: data.gender,
+                    roleId: data.roleId,
+                    positionId: data.positionId,
+                    image: data.avatar,
+                })
+                resolve({
+                    errCode: 0,
+                    message: 'OK'
+                })
 
-            }       
+            }
         } catch (e) {
             reject(e);
         }
-    })                
+    })
 }
 
 let deleteUser = (userId) => {
@@ -150,7 +150,7 @@ let deleteUser = (userId) => {
                 errMessage: `The user isn't exist`
             })
         }
-        
+
         await db.User.destroy({
             where: { id: userId }
         })
@@ -177,8 +177,8 @@ let updateUserData = (data) => {
             })
 
             if (user) {
-                user.firstName = data.firstName;                
-                user.lastName = data.lastName;                
+                user.firstName = data.firstName;
+                user.lastName = data.lastName;
                 user.address = data.address;
                 user.roleId = data.roleId;
                 user.positionId = data.positionId;
@@ -187,7 +187,7 @@ let updateUserData = (data) => {
                 if (data.avatar) {
                     user.image = data.avatar;
                 }
-                
+
                 await user.save();
                 resolve({
                     errCode: 0,
@@ -216,7 +216,9 @@ let getAllCodeService = (typeInput) => {
             } else {
                 let res = {};
                 let allcode = await db.Allcode.findAll({
-                    where: { type: typeInput }
+                    where: {
+                        type: typeInput
+                    }
                 });
                 res.errCode = 0;
                 res.data = allcode;
